@@ -63,6 +63,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  annotations: 
+    {% for key, value in .Values.service.annotations.items() %}
+    {{ key }}: "{{ value }}"
+    {% endfor %}
   name: {{ include "devlake.fullname" . }}-ui
   labels:
     {{- include "devlake.labels" . | nindent 4 }}
@@ -74,7 +78,7 @@ spec:
   ports:
     - protocol: TCP
       name: ui
-      port: 4000
+      port: {{ .Values.service.port | default 4000 }}
       targetPort: 4000
       {{- if eq .Values.service.type "NodePort" }}
       nodePort: {{ .Values.service.uiPort }}
