@@ -64,9 +64,9 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations: 
-    {% for key, value in .Values.service.annotations.items() %}
-    {{ key }}: "{{ value }}"
-    {% endfor %}
+{{- if .Values.SERVICE.ANNOTATIONS }}
+{{ toYaml .Values.SERVICE.ANNOTATIONS | indent 4 }}
+{{- end }}
   name: {{ include "devlake.fullname" . }}-ui
   labels:
     {{- include "devlake.labels" . | nindent 4 }}
